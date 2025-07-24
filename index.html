@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La fórmula de Pedro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f1a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #1c1c2e;
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #00ffb3;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .flag {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 10px 0 20px;
+      color: #00ffb3;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .games {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .game-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .game-option img {
+      width: 24px;
+      height: 24px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 8px;
+      background-color: #2c2c3f;
+      color: white;
+    }
+
+    .btn {
+      background-color: #00ffb3;
+      color: #000;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #00d49a;
+    }
+
+    .progress-bar {
+      margin-top: 15px;
+      height: 10px;
+      background-color: #2c2c3f;
+      border-radius: 5px;
+      overflow: hidden;
+      animation: grow 3s ease-in-out;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #00ffb3;
+      width: 100%;
+      animation: fill 3s linear forwards;
+    }
+
+    @keyframes fill {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    .online-status {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #aaa;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .timer {
+      font-size: 16px;
+      color: #ff5c5c;
+      margin: 10px 0;
+    }
+
+    .bonus-button {
+      display: block;
+      margin-top: 30px;
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .bonus-button:hover {
+      background-color: #005dc1;
+    }
+
+    .warning {
+      color: #ff5c5c;
+      font-size: 13px;
+      margin-top: 8px;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://flagcdn.com/w320/mx.png" alt="Mexico Flag" class="flag">
+    <h1>La fórmula de Pedro</h1>
+
+    <div class="online-status">🔵 Online: <span id="usersOnline">87</span> usuarios</div>
+    <div class="timer">⏳ Acceso cierra en <span id="countdown">04:59</span></div>
+
+    <form>
+      <label>Elige tu juego:</label>
+      <div class="games">
+        <label class="game-option">
+          <input type="radio" name="game" checked>
+          <img src="https://pictures.by.trbna.com/image/11f58c1a-a9dd-4257-ad87-1fb134a0ff09?width=1260&quality=70" alt="Aviator"> Aviator
+        </label>
+        <label class="game-option">
+          <input type="radio" name="game">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0yAzY3u9y3kB_nbrgJ52lFWSGN2qwKzOZwHUbVHWSk_cxYvBWVYkNzk6fA3eUAeH4ly8&usqp=CAU" alt="Mines"> Mines
+        </label>
+        <label class="game-option">
+          <input type="radio" name="game">
+          🐔 Chicken Road
+        </label>
+        <label class="game-option">
+          <input type="radio" name="game">
+          ⚽ Penalty
+        </label>
+      </div>
+
+      <label for="account">ID de cuenta 1xBet:</label>
+      <input type="text" id="account" placeholder="Ej. 1234567890" required>
+      <div class="warning" id="warning">Por favor, ingresa un ID válido de 10 dígitos</div>
+
+      <button class="btn" type="button" id="startBtn" onclick="showProgress()" disabled>Start</button>
+      <div class="progress-bar" id="progress" style="display:none;">
+        <div class="progress-bar-fill"></div>
+      </div>
+    </form>
+
+    <a href="https://affpa.top/L?tag=d_2911869m_14203c_&site=2911869&ad=14203" class="bonus-button" target="_blank">
+      🎁 Consigue 500 MXN de bono
+    </a>
+  </div>
+
+  <script>
+    // Countdown Timer
+    let seconds = 299;
+    const countdownEl = document.getElementById("countdown");
+    setInterval(() => {
+      if (seconds > 0) seconds--;
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      countdownEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }, 1000);
+
+    // Form Validation
+    const input = document.getElementById("account");
+    const button = document.getElementById("startBtn");
+    const warning = document.getElementById("warning");
+
+    input.addEventListener("input", () => {
+      const isValid = /^\d{10}$/.test(input.value);
+      button.disabled = !isValid;
+      warning.style.display = isValid ? "none" : "block";
+    });
+
+    // Show progress bar
+    function showProgress() {
+      const progress = document.getElementById("progress");
+      progress.style.display = "block";
+      setTimeout(() => {
+        alert("❌ Depósito de 100 MXN no encontrado. Por favor, realiza un depósito.");
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
